@@ -10,7 +10,6 @@ import {
   FileTextOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  GlobalOutlined,
 } from "@ant-design/icons";
 import { useI18n } from "../i18n/context";
 import type { TranslationKey } from "../i18n/locales";
@@ -29,13 +28,9 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-  const { locale, setLocale, t } = useI18n();
+  const { t } = useI18n();
 
   const width = collapsed ? "var(--sidebar-collapsed)" : "var(--sidebar-expanded)";
-
-  const toggleLocale = () => {
-    setLocale(locale === "en" ? "zh" : "en");
-  };
 
   return (
     <div
@@ -88,21 +83,6 @@ export default function Sidebar() {
       </nav>
 
       <div style={{ padding: "8px 8px 12px", borderTop: "1px solid var(--color-border)", display: "flex", flexDirection: "column", gap: 2 }}>
-        {/* Language Toggle */}
-        <div
-          onClick={toggleLocale}
-          style={{
-            display: "flex", alignItems: "center", gap: 12,
-            padding: "10px 12px", borderRadius: 8, cursor: "pointer",
-            color: "var(--color-text-secondary)", fontSize: 18,
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "#f8f9fa"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-        >
-          <GlobalOutlined />
-          {!collapsed && <span style={{ fontSize: 13 }}>{locale === "en" ? "中文" : "English"}</span>}
-        </div>
-
         {/* Collapse Toggle */}
         <div
           onClick={() => setCollapsed(!collapsed)}
