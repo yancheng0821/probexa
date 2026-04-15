@@ -1,0 +1,129 @@
+:root {
+  --color-primary: #6366f1;
+  --color-accent: #8b5cf6;
+  --color-success: #10b981;
+  --color-warning: #f97316;
+  --color-danger: #f43f5e;
+  --color-info: #3b82f6;
+  --color-bg-page: #f8f9fa;
+  --color-bg-card: #ffffff;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #888888;
+  --color-border: #e8e8e8;
+  --radius-card: 12px;
+  --radius-button: 8px;
+  --radius-pill: 20px;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --sidebar-collapsed: 56px;
+  --sidebar-expanded: 220px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--color-bg-page);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.stat-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.stat-card .stat-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.stat-card .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.stat-card .stat-change {
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.content-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.content-card .card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pill-tiktok { background: #f0f0ff; color: #6366f1; }
+.pill-youtube { background: #fee2e2; color: #dc2626; }
+.pill-reddit { background: #fff7ed; color: #ea580c; }
+.pill-amazon { background: #d1fae5; color: #059669; }
+
+.pill-completed { background: #dcfce7; color: #16a34a; }
+.pill-running { background: #fef3c7; color: #d97706; }
+.pill-pending { background: #dbeafe; color: #2563eb; }
+.pill-failed { background: #fee2e2; color: #dc2626; }
+
+.action-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.action-tag:hover { opacity: 0.8; }
+.action-tag-pain { background: #fef3c7; color: #d97706; }
+.action-tag-trends { background: #dbeafe; color: #2563eb; }
+.action-tag-needs { background: #d1fae5; color: #059669; }
+.action-tag-pricing { background: #ede9fe; color: #7c3aed; }
+
+.momentum-rising { background: #dcfce7; color: #16a34a; }
+.momentum-stable { background: #dbeafe; color: #2563eb; }
+.momentum-declining { background: #fee2e2; color: #dc2626; }
+
+.potential-high { background: #dcfce7; color: #16a34a; }
+.potential-medium { background: #fef3c7; color: #d97706; }
+.potential-low { background: #f3f4f6; color: #6b7280; }
+
+.ant-table-wrapper .ant-table {
+  border-radius: var(--radius-card) !important;
+}
+
+.ant-table-wrapper .ant-table-container {
+  border-radius: var(--radius-card) !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}

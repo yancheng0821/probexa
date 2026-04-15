@@ -1,53 +1,49 @@
-import { Layout as AntLayout, Menu } from "antd";
-import {
-  DashboardOutlined,
-  SearchOutlined,
-  RiseOutlined,
-  WarningOutlined,
-  BulbOutlined,
-  ClockCircleOutlined,
-  FileTextOutlined,
-} from "@ant-design/icons";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { ConfigProvider } from "antd";
+import { Outlet, useLocation } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import theme from "../theme/theme";
 
-const { Sider, Content, Header } = AntLayout;
+const pageTitles: Record<string, string> = {
+  "/": "Dashboard",
+  "/tasks": "Tasks",
+  "/trends": "Trends",
+  "/pain-points": "Pain Points",
+  "/needs": "Needs",
+  "/schedules": "Schedules",
+  "/reports": "Reports",
+};
 
-const menuItems = [
-  { key: "/", icon: <DashboardOutlined />, label: "Dashboard" },
-  { key: "/tasks", icon: <SearchOutlined />, label: "Tasks" },
-  { key: "/trends", icon: <RiseOutlined />, label: "Trends" },
-  { key: "/pain-points", icon: <WarningOutlined />, label: "Pain Points" },
-  { key: "/needs", icon: <BulbOutlined />, label: "Needs" },
-  { key: "/schedules", icon: <ClockCircleOutlined />, label: "Schedules" },
-  { key: "/reports", icon: <FileTextOutlined />, label: "Reports" },
-];
+const pageSubtitles: Record<string, string> = {
+  "/": "Research overview and insights",
+  "/tasks": "Create and manage scraping tasks",
+  "/trends": "Rising topics and engagement patterns",
+  "/pain-points": "Frequency and severity analysis",
+  "/needs": "Unmet needs and market opportunities",
+  "/schedules": "Automated scraping schedules",
+  "/reports": "Generate and export reports",
+};
 
 export default function Layout() {
-  const navigate = useNavigate();
   const location = useLocation();
 
   return (
-    <AntLayout style={{ minHeight: "100vh" }}>
-      <Sider>
-        <div style={{ color: "#fff", fontSize: 20, fontWeight: "bold", padding: "16px 24px" }}>
-          Probexa
+    <ConfigProvider theme={theme}>
+      <div style={{ display: "flex", minHeight: "100vh" }}>
+        <Sidebar />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+          <header style={{ padding: "20px 28px 0", background: "var(--color-bg-page)" }}>
+            <h1 style={{ fontSize: 18, fontWeight: 600, color: "var(--color-text)", margin: 0 }}>
+              {pageTitles[location.pathname] || "Probexa"}
+            </h1>
+            <p style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 2 }}>
+              {pageSubtitles[location.pathname] || ""}
+            </p>
+          </header>
+          <main style={{ flex: 1, padding: "16px 28px 28px" }}>
+            <Outlet />
+          </main>
         </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={[location.pathname]}
-          items={menuItems}
-          onClick={({ key }) => navigate(key)}
-        />
-      </Sider>
-      <AntLayout>
-        <Header style={{ background: "#fff", padding: "0 24px", fontSize: 18 }}>
-          {menuItems.find((m) => m.key === location.pathname)?.label || "Probexa"}
-        </Header>
-        <Content style={{ margin: 24, padding: 24, background: "#fff", borderRadius: 8 }}>
-          <Outlet />
-        </Content>
-      </AntLayout>
-    </AntLayout>
+      </div>
+    </ConfigProvider>
   );
 }

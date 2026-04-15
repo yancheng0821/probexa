@@ -20,26 +20,26 @@ export default function TaskForm({ onCreated }: Props) {
   };
 
   return (
-    <Form form={form} layout="inline" onFinish={onFinish} initialValues={{ platform: "tiktok", max_items: 500 }}>
-      <Form.Item name="keyword" rules={[{ required: true, message: "Enter keyword" }]}>
-        <Input placeholder="Search keyword" style={{ width: 200 }} />
-      </Form.Item>
-      <Form.Item name="platform">
-        <Select style={{ width: 120 }}>
-          <Select.Option value="tiktok">TikTok</Select.Option>
-          <Select.Option value="youtube">YouTube</Select.Option>
-          <Select.Option value="reddit">Reddit</Select.Option>
-          <Select.Option value="amazon">Amazon</Select.Option>
-        </Select>
-      </Form.Item>
-      <Form.Item name="max_items">
-        <InputNumber min={10} max={10000} />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Start Scraping
-        </Button>
-      </Form.Item>
-    </Form>
+    <div className="content-card" style={{ marginBottom: 20 }}>
+      <Form form={form} layout="inline" onFinish={onFinish} initialValues={{ platform: "tiktok", max_items: 500 }} style={{ gap: 8 }}>
+        <Form.Item name="keyword" rules={[{ required: true, message: "Enter keyword" }]} style={{ flex: 2 }}>
+          <Input placeholder="Search keyword..." />
+        </Form.Item>
+        <Form.Item name="platform" style={{ flex: 1 }}>
+          <Select>
+            <Select.Option value="tiktok">TikTok</Select.Option>
+            <Select.Option value="youtube">YouTube</Select.Option>
+            <Select.Option value="reddit">Reddit</Select.Option>
+            <Select.Option value="amazon">Amazon</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="max_items" style={{ flex: 1 }}>
+          <InputNumber min={10} max={10000} style={{ width: "100%" }} />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">Start Scraping</Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 }

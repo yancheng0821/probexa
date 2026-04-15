@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Select, message, Empty } from "antd";
+import { Button, Select, message, Empty } from "antd";
 import api from "../api/client";
 
 interface Task {
@@ -22,10 +22,7 @@ export default function Reports() {
   }, []);
 
   const generateReport = async () => {
-    if (!selectedTask) {
-      message.warning("Select a task first");
-      return;
-    }
+    if (!selectedTask) { message.warning("Select a task first"); return; }
     setLoading(true);
     try {
       const res = await api.post("/reports", { task_id: selectedTask });
@@ -39,29 +36,27 @@ export default function Reports() {
 
   return (
     <>
-      <Card>
+      <div className="content-card" style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
         <Select
           placeholder="Select a completed task"
-          style={{ width: 400, marginRight: 16 }}
+          style={{ flex: 1 }}
           onChange={setSelectedTask}
           value={selectedTask || undefined}
         >
           {tasks.map((t) => (
             <Select.Option key={t.id} value={t.id}>
-              {t.keyword} ({t.platform})
+              {t.keyword} <span style={{ color: "var(--color-text-secondary)" }}>({t.platform})</span>
             </Select.Option>
           ))}
         </Select>
-        <Button type="primary" onClick={generateReport} loading={loading}>
-          Generate Report
-        </Button>
-      </Card>
+        <Button type="primary" onClick={generateReport} loading={loading}>Generate Report</Button>
+      </div>
       {report ? (
-        <Card style={{ marginTop: 16 }}>
-          <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{report}</pre>
-        </Card>
+        <div className="content-card">
+          <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit", fontSize: 13, lineHeight: 1.7, color: "var(--color-text)" }}>{report}</pre>
+        </div>
       ) : (
-        <Empty description="Select a task and generate a report" style={{ marginTop: 24 }} />
+        <Empty description="Select a task and generate a report" />
       )}
     </>
   );

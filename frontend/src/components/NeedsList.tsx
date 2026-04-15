@@ -1,5 +1,3 @@
-import { Card, Tag } from "antd";
-
 interface Need {
   need: string;
   mentions: number;
@@ -11,22 +9,33 @@ interface Props {
   needs: Need[];
 }
 
-const potentialColor: Record<string, string> = { high: "green", medium: "orange", low: "default" };
+const potentialClass: Record<string, string> = {
+  high: "potential-high",
+  medium: "potential-medium",
+  low: "potential-low",
+};
 
 export default function NeedsList({ needs }: Props) {
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       {needs.map((n, i) => (
-        <Card key={i} style={{ marginBottom: 12 }}>
-          <h3>
-            {n.need} <Tag color={potentialColor[n.market_potential]}>{n.market_potential} potential</Tag>
-          </h3>
-          <p>Mentioned {n.mentions} times</p>
+        <div key={i} className="content-card">
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+            <span style={{ fontSize: 15, fontWeight: 600 }}>{n.need}</span>
+            <span className={`pill ${potentialClass[n.market_potential] || ""}`}>
+              {n.market_potential} potential
+            </span>
+          </div>
+          <p style={{ fontSize: 12, color: "var(--color-text-secondary)", marginBottom: 8 }}>
+            Mentioned {n.mentions} times
+          </p>
           {n.sample_quotes?.map((q, j) => (
-            <p key={j} style={{ color: "#888", fontStyle: "italic" }}>"{q}"</p>
+            <p key={j} style={{ fontSize: 12, color: "var(--color-text-secondary)", fontStyle: "italic", marginBottom: 4 }}>
+              "{q}"
+            </p>
           ))}
-        </Card>
+        </div>
       ))}
-    </>
+    </div>
   );
 }

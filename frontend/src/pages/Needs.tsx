@@ -27,7 +27,7 @@ export default function Needs() {
     }).catch(() => setLoading(false));
   }, []);
 
-  if (loading) return <Spin />;
+  if (loading) return <div style={{ textAlign: "center", padding: 60 }}><Spin /></div>;
   if (!results.length) return <Empty description="No unmet needs data yet." />;
 
   const latest = results[0];
