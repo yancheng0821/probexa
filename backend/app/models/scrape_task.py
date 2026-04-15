@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import String, Integer, DateTime
+from sqlalchemy import String, Integer, DateTime, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -10,7 +10,7 @@ from app.core.database import Base
 class ScrapeTask(Base):
     __tablename__ = "scrape_tasks"
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
     keyword: Mapped[str] = mapped_column(String(255))
     platform: Mapped[str] = mapped_column(String(50))
     status: Mapped[str] = mapped_column(String(20), default="pending")

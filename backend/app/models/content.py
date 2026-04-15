@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import String, Text, DateTime, ForeignKey, UniqueConstraint, JSON
+from sqlalchemy import String, Text, DateTime, ForeignKey, UniqueConstraint, JSON, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -13,8 +13,8 @@ class Content(Base):
         UniqueConstraint("platform", "source_id", name="uq_platform_source_id"),
     )
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    task_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("scrape_tasks.id"))
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    task_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("scrape_tasks.id"))
     platform: Mapped[str] = mapped_column(String(50))
     source_id: Mapped[str] = mapped_column(String(255))
     content_type: Mapped[str] = mapped_column(String(20))

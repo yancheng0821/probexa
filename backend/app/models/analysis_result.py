@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import String, Text, DateTime, ForeignKey, JSON
+from sqlalchemy import String, Text, DateTime, ForeignKey, JSON, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -10,8 +10,8 @@ from app.core.database import Base
 class AnalysisResult(Base):
     __tablename__ = "analysis_results"
 
-    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    task_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("scrape_tasks.id"))
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    task_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("scrape_tasks.id"))
     analysis_type: Mapped[str] = mapped_column(String(50))
     summary: Mapped[str | None] = mapped_column(Text, nullable=True)
     details: Mapped[dict | None] = mapped_column(JSON, nullable=True)
