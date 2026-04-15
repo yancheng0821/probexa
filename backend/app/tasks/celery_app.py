@@ -8,6 +8,8 @@ celery_app = Celery(
     backend=settings.redis_url,
 )
 
+celery_app.conf.include = ["app.tasks.scrape_tasks", "app.tasks.analysis_tasks"]
+
 celery_app.conf.update(
     task_serializer="json",
     accept_content=["json"],

@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6380/0"
     openai_api_key: str = ""
 
-    model_config = {"env_file": ".env"}
+    model_config = {"env_file": ["../.env", ".env"]}
 
 
 settings = Settings()
