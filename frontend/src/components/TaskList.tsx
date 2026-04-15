@@ -1,5 +1,6 @@
 import { Table, Space, message } from "antd";
 import api from "../api/client";
+import { useI18n } from "../i18n/context";
 
 interface Task {
   id: string;
@@ -16,21 +17,12 @@ interface Props {
   onRefresh: () => void;
 }
 
-const platformPill: Record<string, string> = {
-  tiktok: "pill-tiktok",
-  youtube: "pill-youtube",
-  reddit: "pill-reddit",
-  amazon: "pill-amazon",
-};
-
-const statusPill: Record<string, string> = {
-  pending: "pill-pending",
-  running: "pill-running",
-  completed: "pill-completed",
-  failed: "pill-failed",
-};
+const platformPill: Record<string, string> = { tiktok: "pill-tiktok", youtube: "pill-youtube", reddit: "pill-reddit", amazon: "pill-amazon" };
+const statusPill: Record<string, string> = { pending: "pill-pending", running: "pill-running", completed: "pill-completed", failed: "pill-failed" };
 
 export default function TaskList({ tasks, loading }: Props) {
+  const { t } = useI18n();
+
   const triggerAnalysis = async (taskId: string, type: string) => {
     try {
       await api.post("/analysis", { task_id: taskId, analysis_type: type });
@@ -41,12 +33,12 @@ export default function TaskList({ tasks, loading }: Props) {
   };
 
   const columns = [
-    { title: "Keyword", dataIndex: "keyword", key: "keyword", render: (v: string) => <span style={{ fontWeight: 500 }}>{v}</span> },
-    { title: "Platform", dataIndex: "platform", key: "platform", render: (v: string) => <span className={`pill ${platformPill[v] || ""}`}>{v}</span> },
-    { title: "Status", dataIndex: "status", key: "status", render: (v: string) => <span className={`pill ${statusPill[v] || ""}`}>{v}</span> },
-    { title: "Items", dataIndex: "total_items", key: "total_items", render: (v: number) => <span style={{ fontWeight: 600 }}>{v.toLocaleString()}</span> },
+    { title: t("tasks.keyword"), dataIndex: "keyword", key: "keyword", render: (v: string) => <span style={{ fontWeight: 500 }}>{v}</span> },
+    { title: t("tasks.platform"), dataIndex: "platform", key: "platform", render: (v: string) => <span className={`pill ${platformPill[v] || ""}`}>{v}</span> },
+    { title: t("tasks.status"), dataIndex: "status", key: "status", render: (v: string) => <span className={`pill ${statusPill[v] || ""}`}>{v}</span> },
+    { title: t("tasks.items"), dataIndex: "total_items", key: "total_items", render: (v: number) => <span style={{ fontWeight: 600 }}>{v.toLocaleString()}</span> },
     {
-      title: "Actions", key: "actions",
+      title: t("tasks.actions"), key: "actions",
       render: (_: unknown, record: Task) => (
         <Space size={4}>
           {record.status === "completed" && (

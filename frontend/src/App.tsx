@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { I18nProvider } from "./i18n/context";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
@@ -10,20 +11,22 @@ import Reports from "./pages/Reports";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/trends" element={<Trends />} />
-          <Route path="/pain-points" element={<PainPoints />} />
-          <Route path="/needs" element={<Needs />} />
-          <Route path="/schedules" element={<Schedules />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <I18nProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/pain-points" element={<PainPoints />} />
+            <Route path="/needs" element={<Needs />} />
+            <Route path="/schedules" element={<Schedules />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </I18nProvider>
   );
 }
 

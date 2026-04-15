@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Table } from "antd";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import api from "../api/client";
+import { useI18n } from "../i18n/context";
 
 interface Task {
   id: string;
@@ -12,29 +13,16 @@ interface Task {
   created_at: string;
 }
 
-const platformPill: Record<string, string> = {
-  tiktok: "pill-tiktok",
-  youtube: "pill-youtube",
-  reddit: "pill-reddit",
-  amazon: "pill-amazon",
-};
-
-const statusPill: Record<string, string> = {
-  pending: "pill-pending",
-  running: "pill-running",
-  completed: "pill-completed",
-  failed: "pill-failed",
-};
+const platformPill: Record<string, string> = { tiktok: "pill-tiktok", youtube: "pill-youtube", reddit: "pill-reddit", amazon: "pill-amazon" };
+const statusPill: Record<string, string> = { pending: "pill-pending", running: "pill-running", completed: "pill-completed", failed: "pill-failed" };
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useI18n();
 
   useEffect(() => {
-    api.get("/tasks?limit=10").then((res) => {
-      setTasks(res.data);
-      setLoading(false);
-    }).catch(() => setLoading(false));
+    api.get("/tasks?limit=10").then((res) => { setTasks(res.data); setLoading(false); }).catch(() => setLoading(false));
   }, []);
 
   const completedCount = tasks.filter((t) => t.status === "completed").length;
@@ -42,27 +30,23 @@ export default function Dashboard() {
   const runningCount = tasks.filter((t) => t.status === "running").length;
 
   const stats = [
-    { label: "Total Tasks", value: tasks.length, color: "var(--color-primary)", change: `${completedCount} completed` },
-    { label: "Items Scraped", value: totalItems.toLocaleString(), color: "var(--color-accent)", change: `${runningCount} running` },
-    { label: "Pain Points", value: "—", color: "var(--color-danger)", change: "Run analysis" },
-    { label: "Rising Trends", value: "—", color: "var(--color-success)", change: "Run analysis" },
+    { label: t("dashboard.totalTasks"), value: tasks.length, color: "var(--color-primary)", change: `${completedCount} ${t("dashboard.completed")}` },
+    { label: t("dashboard.itemsScraped"), value: totalItems.toLocaleString(), color: "var(--color-accent)", change: `${runningCount} ${t("dashboard.running")}` },
+    { label: t("dashboard.painPoints"), value: "—", color: "var(--color-danger)", change: t("dashboard.runAnalysis") },
+    { label: t("dashboard.risingTrends"), value: "—", color: "var(--color-success)", change: t("dashboard.runAnalysis") },
   ];
 
   const chartData = [
-    { day: "Mon", items: 120 },
-    { day: "Tue", items: 230 },
-    { day: "Wed", items: 180 },
-    { day: "Thu", items: 340 },
-    { day: "Fri", items: 280 },
-    { day: "Sat", items: 150 },
+    { day: "Mon", items: 120 }, { day: "Tue", items: 230 }, { day: "Wed", items: 180 },
+    { day: "Thu", items: 340 }, { day: "Fri", items: 280 }, { day: "Sat", items: 150 },
     { day: "Sun", items: totalItems || 200 },
   ];
 
   const columns = [
-    { title: "Keyword", dataIndex: "keyword", key: "keyword", render: (v: string) => <span style={{ fontWeight: 500 }}>{v}</span> },
-    { title: "Platform", dataIndex: "platform", key: "platform", render: (v: string) => <span className={`pill ${platformPill[v] || ""}`}>{v}</span> },
-    { title: "Status", dataIndex: "status", key: "status", render: (v: string) => <span className={`pill ${statusPill[v] || ""}`}>{v}</span> },
-    { title: "Items", dataIndex: "total_items", key: "total_items", render: (v: number) => <span style={{ fontWeight: 600 }}>{v.toLocaleString()}</span> },
+    { title: t("tasks.keyword"), dataIndex: "keyword", key: "keyword", render: (v: string) => <span style={{ fontWeight: 500 }}>{v}</span> },
+    { title: t("tasks.platform"), dataIndex: "platform", key: "platform", render: (v: string) => <span className={`pill ${platformPill[v] || ""}`}>{v}</span> },
+    { title: t("tasks.status"), dataIndex: "status", key: "status", render: (v: string) => <span className={`pill ${statusPill[v] || ""}`}>{v}</span> },
+    { title: t("tasks.items"), dataIndex: "total_items", key: "total_items", render: (v: number) => <span style={{ fontWeight: 600 }}>{v.toLocaleString()}</span> },
   ];
 
   return (
@@ -76,10 +60,9 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
-
       <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 12, marginBottom: 20 }}>
         <div className="content-card">
-          <div className="card-title">Scraping Activity (7 days)</div>
+          <div className="card-title">{t("dashboard.scrapingActivity")}</div>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -88,29 +71,21 @@ export default function Dashboard() {
               <Tooltip />
               <defs>
                 <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#c7d2fe" />
+                  <stop offset="0%" stopColor="#6366f1" /><stop offset="100%" stopColor="#c7d2fe" />
                 </linearGradient>
               </defs>
               <Bar dataKey="items" fill="url(#barGradient)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
-
         <div className="content-card">
-          <div className="card-title">By Platform</div>
+          <div className="card-title">{t("dashboard.byPlatform")}</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 8 }}>
-            {[
-              { name: "TikTok", color: "#6366f1", pct: 68 },
-              { name: "YouTube", color: "#f43f5e", pct: 18 },
-              { name: "Reddit", color: "#f97316", pct: 10 },
-              { name: "Amazon", color: "#10b981", pct: 4 },
-            ].map((p) => (
+            {[{ name: "TikTok", color: "#6366f1", pct: 68 }, { name: "YouTube", color: "#f43f5e", pct: 18 }, { name: "Reddit", color: "#f97316", pct: 10 }, { name: "Amazon", color: "#10b981", pct: 4 }].map((p) => (
               <div key={p.name}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
                   <span style={{ fontSize: 12, color: "var(--color-text-secondary)", display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ width: 8, height: 8, background: p.color, borderRadius: "50%", display: "inline-block" }} />
-                    {p.name}
+                    <span style={{ width: 8, height: 8, background: p.color, borderRadius: "50%", display: "inline-block" }} />{p.name}
                   </span>
                   <span style={{ fontSize: 12, fontWeight: 600 }}>{p.pct}%</span>
                 </div>
@@ -122,9 +97,8 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
       <div className="content-card">
-        <div className="card-title">Recent Tasks</div>
+        <div className="card-title">{t("dashboard.recentTasks")}</div>
         <Table dataSource={tasks} columns={columns} rowKey="id" loading={loading} pagination={false} size="small" />
       </div>
     </>
